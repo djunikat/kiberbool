@@ -1,0 +1,34 @@
+#define red 2
+#define gr 4
+#define yel 7
+bool status=false;
+int mode=0;
+void setup(){
+  pinMode(red,OUTPUT);
+  pinMode(gr,OUTPUT);
+  pinMode(yel,OUTPUT);
+  pinMode(3,INPUT);
+  digitalWrite(gr,HIGH);
+
+}
+void loop(){
+  if (digitalRead(3)==HIGH){
+    if (mode==0){
+      mode=1;
+      digitalWrite(gr,LOW);
+      digitalWrite(red,HIGH);
+    }
+    else if(mode==1){
+      mode=2;
+      digitalWrite(red,LOW);
+      digitalWrite(yel,HIGH);
+    }
+    else{
+      mode=0;
+      digitalWrite(yel,LOW);
+      digitalWrite(gr,HIGH);
+    }
+    delay(500);  
+    }
+
+}
