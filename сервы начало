@@ -1,0 +1,19 @@
+int angle=0;
+#include "Servo.h"
+Servo servo;
+void setup(){
+  pinMode(11,OUTPUT); //ШИМ пин 
+  servo.attach(11);
+  
+}
+void loop(){
+  if (angle==90){
+   // servo.detach();
+    return ;
+  }
+  for(int i =0; i<= 90; i++)
+  {angle+=i;
+  servo.write(angle);
+  delay(500);
+  } 
+}
