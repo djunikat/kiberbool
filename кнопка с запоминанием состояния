@@ -1,0 +1,19 @@
+bool status = false;
+void setup() {
+  pinMode(2, OUTPUT);
+  pinMode(3, INPUT_PULLUP);
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  if (digitalRead(3) == HIGH && !status) {
+    digitalWrite(2, HIGH);
+    status = true
+  }
+  else if (digitalRead(3) == HIGH && status){
+    digitalWrite(2, LOW);
+    status = false
+  }
+  delay(100);
+}
