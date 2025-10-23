@@ -1,0 +1,43 @@
+int one = false;
+int two = true;
+int pwm_one;
+int pwm_two;
+
+void setup() {
+  pinMode(2, INPUT);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println(digitalRead(2));
+  if (digitalRead(2) == HIGH) {
+    if (two) {
+      digitalWrite(10, LOW);
+      digitalWrite(11, HIGH);
+      one = true;
+      two = false;
+      delay(300);
+    }
+    else if (one) {
+      digitalWrite(11, LOW);
+      digitalWrite(10, HIGH);
+      two = true;
+      one = false;
+      delay(300);
+    }
+  }
+  if (one){
+      pwm_one = analogRead(A5); // читаем с пот-метра
+      pwm_one = map(pwm_one, 0, 1023, 0, 255); // перевод в 0-255
+      pwm_one = constrain(pwm_one, 0, 255); // обрежем диапазон
+      analogWrite(11, pwm_one);
+  }
+  else if (two){
+    pwm_two = analogRead(A5); // читаем с пот-метра
+    pwm_two = map(pwm_two, 0, 1023, 0, 255); // перевод в 0-255
+    pwm_two = constrain(pwm_two, 0, 255); // обрежем диапазон
+    analogWrite(10, pwm_two);
+  }
+}
