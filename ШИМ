@@ -1,0 +1,14 @@
+int dt = 100
+void setup() {
+  pinMode(A0, INPUT);
+  pinMode(3, OUTPUT);
+  serial.begin(9600);
+}
+
+void loop() {
+  int res = analogRead(A0);
+  digitalWrite(3, LOW);
+  delay(dt);
+  digitalWrite(3, HIGH);
+  delay(dt*res);
+}
