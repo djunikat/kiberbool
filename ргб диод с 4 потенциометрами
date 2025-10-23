@@ -1,0 +1,24 @@
+int pwm_r;
+int pwm_g;
+int pwm_b;
+int pwm_bright;
+
+void setup(){
+  pwm_r=analogRead(A0);
+  pwm_r=map(pwm_r,0,1023,0,255);
+  pwm_r=constrain(pwm_r,0,255);
+  analogWrite(11,pwm_r);
+  pwm_g=analogRead(A0);
+  pwm_g=map(pwm_r,0,1023,0,255);
+  pwm_g=constrain(pwm_r,0,255);
+  analogWrite(10,pwm_g);
+  pwm_b=analogRead(A0);
+  pwm_b=map(pwm_r,0,1023,0,255);
+  pwm_b=constrain(pwm_r,0,255);
+  analogWrite(9,pwm_b);
+  pwm_bright=analogRead(A3);
+  pwm_bright=map(pwm_r,0,1023,0,255);
+  pwm_bright=constrain(pwm_r,0,255);
+  analogWrite(6,pwm_bright);  
+  delay(30);
+}
