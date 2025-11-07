@@ -1,0 +1,104 @@
+#define L_LEFT 3
+#define L_RIGHT 2
+#define BTN 4
+#define DELAY 1000
+
+long timer1 = 0;
+long timer2 = 0;
+
+int mode = 0;
+int last_mode = 0;
+bool ledmode = false;
+
+void setup(){
+  pinMode(L_LEFT, OUTPUT);
+  pinMode(L_RIGHT, OUTPUT);
+  pinMode(BTN, INPUT);
+}
+void left_rot(){
+  // Начальная настройка нового цикла
+  if (last_mode != mode){
+    timer1 = 0;
+    timer2 = 0;
+    ledmode = false;
+    last_mode = mode;
+  }
+  // Левый поворотник
+  // Находим разность текущего времени и времени отметки на таймере
+  if (millis() - timer1 >=  DELAY && ledmode){
+    // Отметка на таймере 2
+    timer2 = millis();
+    // Очистка таймера 1
+    timer1 = 0;
+    digitalWrite(L_LEFT, LOW);
+    ledmode = false;
+  }
+  else if(millis() - timer2 >=  DELAY && !ledmode){
+    // Отметка на таймере 1
+    timer1 = millis();
+    // Очистка таймера 2
+    timer2 = 0;
+    digitalWrite(L_LEFT, HIGH);
+    ledmode = true;
+  }
+}
+void right_rot(){
+  // Начальная настройка нового цикла
+  if (last_mode != mode){
+    timer1 = 0;
+    timer2 = 0;
+    ledmode = false;
+    last_mode = mode;
+  }
+  // Правый поворотник
+  // Находим разность текущего времени и времени отметки на таймере
+  if (millis() - timer1 >=  DELAY && ledmode){
+    // Отметка на таймере 2
+    timer2 = millis();
+    // Очистка таймера 1
+    timer1 = 0;
+    digitalWrite(L_RIGHT, LOW);
+    ledmode = false;
+  }
+  else if(millis() - timer2 >=  DELAY && !ledmode){
+    // Отметка на таймере 1
+    timer1 = millis();
+    // Очистка таймера 2
+    timer2 = 0;
+    digitalWrite(L_RIGHT, HIGH);
+    ledmode = true;
+  }
+}
+void stop_signal(){
+  // Начальная настройка нового цикла
+  if (last_mode != mode){
+    timer1 = 0;
+    timer2 = 0;
+    ledmode = false;
+    last_mode = mode;
+  }
+  // Правый поворотник
+  // Находим разность текущего времени и времени отметки на таймере
+  if (millis() - timer1 >=  DELAY && ledmode){
+    // Отметка на таймере 2
+    timer2 = millis();
+    // Очистка таймера 1
+    timer1 = 0;
+    digitalWrite(L_RIGHT, LOW);
+    digitalWrite(L_LEFT, LOW);
+    ledmode = false;
+  }
+  else if(millis() - timer2 >=  DELAY && !ledmode){
+    // Отметка на таймере 1
+    timer1 = millis();
+    // Очистка таймера 2
+    timer2 = 0;
+    digitalWrite(L_RIGHT, HIGH);
+    digitalWrite(L_LEFT, HIGH);
+    ledmode = true;
+  }
+}
+void loop() {
+  // КОД и выбранная функция
+  // ....
+}
