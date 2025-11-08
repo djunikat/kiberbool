@@ -1,0 +1,89 @@
+// подключите один мотор к клемме: M1+ и M1-
+// а второй к клемме: M2+ и M2-
+// Motor shield использует четыре контакта 4, 5, 6, 7 для управления моторами 
+// 4 и 7 — для направления, 5 и 6 — для скорости
+#define SPEED_1      5 
+#define DIR_1        4
+#define SPEED_2      6
+#define DIR_2        7
+
+bool active=false; routeCompleted=false;
+
+void setup() {
+  for (int i=4; i<8; i++) pinMode(i, OUTPUT);
+  pinMode(2, INPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11,OUTPUT);
+} 
+
+void loop() {
+  if (digitalRead(2)==HIGH && !routeCompleted){
+    active=!active;
+    routeCompleted=!routeCompleted;
+    
+    //Стоп-сигналы перед стартом
+    digitalWrite(12, HIGH);
+    digitalWrite(11, HIGH);
+    delay(2000);
+    
+    //Начало движения
+    digitalWrite(12, LOW);
+    digitalWrite(11, LOW);
+    digitalWrite(DIR_2, LOW);
+    digitalWrite(DIR_1, HIGH);
+    analogWrite(SPEED_1, 200);
+    analogWrite(SPEED_2, 200);
+    delay(4500);
+    
+    //Левый поворот с миганием
+    digitalWrite(DIR_1, LOW);
+    digitalWrite(DIR_2, HIGH);
+    for(int i=0; i<3; i++) {
+      analogWrite(SPEED_1, 30);
+      analogWrite(SPEED_2, 30);
+      digitalWrite(12, HIGH);
+      delay(200);
+      digitalWrite(12, LOW);
+      delay(200);
+    }
+    
+    //Прямо
+    digitalWrite(DIR_1, HIGH);
+    digitalWrite(DIR_2, HIGH);
+    analogWrite(SPEED_1, 200);
+    analogWrite(SPEED_2, 200);
+    delay(1500);
+    
+    //Правый поворот с миганием
+    digitalWrite(DIR_1, HIGH);
+    digitalWrite(DIR_2, LOW);
+    for(int i=0; i<3; i++) {
+      analogWrite(SPEED_1, 30);
+      analogWrite(SPEED_2, 30);
+      digitalWrite(11, HIGH);
+      delay(200);
+      digitalWrite(11, LOW);
+      delay(200);
+    }
+    
+    //Прямо
+    digitalWrite(DIR_1, HIGH);
+    digitalWrite(DIR_2, HIGH);
+    analogWrite(SPEED_1, 200);
+    analogWrite(SPEED_2, 200);
+    delay(1500);
+    
+    //Конец траектории и вкл стоп-сигналов
+    analogWrite(SPEED_1, 0);
+    analogWrite(SPEED_2, 0);
+    digitalWrite(11, HIGH);
+    digitalWrite(12, HIGH);
+  }
+  
+  //Второе нажатие выкл стоп-сигналов
+  if (digitalRead(2)==HIGH && routeCompleted && active){
+    active=!active;
+    digitalWrite(11, LOW);
+    digitalWrite(12, LOW);
+  }
+}
